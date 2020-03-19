@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/study
+#    url: log4:jdbc:mysql://127.0.0.1:3306/study
+    username: hac
+    password: root
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    hikari:
+      connection-timeout: 5000
+      validation-timeout: 1000
+      maximum-pool-size: 30
+      minimum-idle: 2
+      connection-test-query: SELECT 1
+
+mybatis:
+  type-aliases-package: com.hac.springboot.study
+  mapper-locations: mybatis/mapper/**/*.xml
+  configuration:
+    cache-enabled: true
+    lazy-loading-enabled: true
+    multiple-result-sets-enabled: true
+    use-column-label: false
+    default-statement-timeout: 65000
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    jdbc.sqlonly: DEBUG
+    org.springframework.web: DEBUG
+    com.zaxxer.hikari.HikariDataSource: ERROR
+    jdbc.sqltiming: INFO
+    jdbc.resultset: INFO
+  file:
+    path: logs
+
