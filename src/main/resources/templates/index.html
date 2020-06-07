@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:insert="layout/layout :: f_header"></th:block>
+<body>
+    <h1>나와라</h1>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+            </div>
+        </div>
+    </div>
+<th:block th:insert="layout/layout :: f_footer"></th:block>
+</body>
+</html>

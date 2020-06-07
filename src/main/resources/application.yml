@@ -1,19 +1,21 @@
+spring.profiles.include: oauth
+
 spring:
   datasource:
     url: jdbc:log4jdbc:mysql://127.0.0.1:3306/study
-#    url: log4:jdbc:mysql://127.0.0.1:3306/study
+    #    url: log4:jdbc:mysql://127.0.0.1:3306/study
     username: hac
     password: root
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     hikari:
       connection-timeout: 5000
       validation-timeout: 1000
-      maximum-pool-size: 30
+      maximum-pool-size: 10
       minimum-idle: 2
       connection-test-query: SELECT 1
 
 mybatis:
-  type-aliases-package: com.hac.springboot.study
+  #  type-aliases-package: com.hac.springboot.study
   mapper-locations: mybatis/mapper/**/*.xml
   configuration:
     cache-enabled: true
@@ -25,11 +27,12 @@ mybatis:
 
 logging:
   level:
+    root: INFO
+    com.hac.sprinboot.study: DEBUG
     jdbc.sqlonly: DEBUG
     org.springframework.web: DEBUG
     com.zaxxer.hikari.HikariDataSource: ERROR
-    jdbc.sqltiming: INFO
-    jdbc.resultset: INFO
+    jdbc.sqltiming: DEBUG
+    jdbc.resultsettable: DEBUG
   file:
-    path: logs
-
+    path: /logs

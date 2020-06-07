@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hac.springboot.study.domain.user.UserMapper">
+
+    <resultMap id="userMap" type="com.hac.springboot.study.web.dto.user.UserDto">
+        <id property="userSrno" column="user_srno" />
+        <id property="userNm" column="user_nm" />
+        <id property="emailAddr" column="email_addr" />
+        <id property="joinTyp" column="join_typ" />
+        <association property="userDetailDto"  javaType="com.hac.springboot.study.web.dto.user.UserDetailDto" >
+            <result property="userAge"  column="user_age" />
+            <result property="userGender"  column="user_gender" />
+            <result property="userAddr"  column="user_addr" />
+        </association>
+        <association property="teamDto"  javaType="com.hac.springboot.study.web.dto.team.TeamDto" >
+            <result property="teamName"  column="team_name" />
+            <result property="teamDesc"  column="team_desc" />
+        </association>
+    </resultMap>
+
+
+    <select id="selectUserInfoList" resultType="com.hac.springboot.study.web.dto.user.UserResponseDto"><!---->
+        select *
+        from cco_user_bas
+    </select>
+
+    <insert id="insertUserJoin" parameterType="com.hac.springboot.study.web.dto.user.UserDto" >
+        INSERT INTO cco_user_bas (
+              user_nm
+            , celp_tlno
+            , join_typ
+            , email_addr
+            , frst_user_id
+            , frst_reg_date
+            , last_chg_user_id
+            , last_chg_date
+        ) VALUES (
+              #{userNm}
+            , null
+            , #{joinTyp}
+            , #{emailAddr}
+            , 'SYS'
+            , now()
+            , 'SYS'
+            , now()
+        )
+        ON DUPLICATE KEY UPDATE
+        user_nm = #{userNm}
+        <selectKey keyProperty="userSrno" resultType="long" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="selectUserInfo" parameterType="long" resultType="com.hac.springboot.study.web.dto.user.UserDto">
+        select
+            user_nm,
+            email_addr,
+            join_typ
+        from cco_user_bas
+        where user_srno = #{userSrno}
+    </select>
+
+    <select id="selectUserList" resultMap="userMap">
+        select
+            a.user_srno,
+            a.user_nm,
+            b.user_age,
+            b.user_gender,
+            c.team_name,
+            c.team_desc,
+            a.email_addr,
+            a.join_typ,
+            b.user_addr
+        from
+            cco_user_bas a inner join cco_user_dtl b
+            on a.user_srno = b.user_srno
+            inner join cco_team_bas c
+            on b.team_srno = c.team_srno
+        order by a.user_srno
+    </select>
+</mapper>
